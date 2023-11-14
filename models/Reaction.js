@@ -1,5 +1,6 @@
 const { Schema, Types } = require("mongoose");
 
+// Define the Reaction schema used as a subdocument in Thought
 const reactionSchema = new Schema(
   {
     reactionId: {
