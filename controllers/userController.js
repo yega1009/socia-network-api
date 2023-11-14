@@ -1,7 +1,7 @@
 const { User, Thought } = require("../models");
 
 module.exports = {
-  // Get all users
+  // Get all users with their thoughts and friends populated
   async getAllUsers(req, res) {
     try {
       const users = await User.find().populate("thoughts").populate("friends");
@@ -11,14 +11,13 @@ module.exports = {
     }
   },
 
-  // Get a single user by ID
+  // Get a single user by ID with their thoughts and friends populated
   async getUserById(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
         .select("-__v")
         .populate("thoughts")
         .populate("friends");
-      // const user = await User.findById(req.params.userId).populate('thoughts').populate('friends');
       if (!user) {
         return res.status(404).json({ message: "No user found with this id!" });
       }
@@ -28,7 +27,7 @@ module.exports = {
     }
   },
 
-  // Create a new user
+  // Create a new user from request body data
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -38,7 +37,7 @@ module.exports = {
     }
   },
 
-  // Update a user by ID
+  // Update a user's data by ID
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -46,7 +45,6 @@ module.exports = {
         { $set: req.body },
         { runValidators: true, new: true }
       );
-      //   const user = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
       if (!user) {
         return res.status(404).json({ message: "No user found with this id!" });
       }
