@@ -32,7 +32,7 @@ module.exports = {
       const thought = await Thought.create(req.body);
       await User.findOneAndUpdate(
         { _id: req.body.userId },
-        { $push: { thoughts: _id } },
+        { $push: { thoughts: thought._id } },  // Corrected this line
         { new: true }
       );
       if (!thought) {
@@ -49,7 +49,7 @@ module.exports = {
   // Update a thought by ID
   async updateThought(req, res) {
     try {
-      const thought = Thought.findOneAndUpdate(
+      const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
         { $set: req.body },
         { runValidators: true, new: true }
